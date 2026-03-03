@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { PERMISSION_MODES, isPermissionMode } from '@/api/types';
 import { runClaude, type StartOptions } from '@/backends/claude/runClaude';
 import { claudeCliPath } from '@/backends/claude/claudeLocal';
+import { getDefaultClaudeCodePath } from '@/backends/claude/sdk/utils';
 import { readCredentials, readSettings } from '@/persistence';
 import { logger } from '@/ui/logger';
 import { authAndSetupMachineIfNeeded, ensureMachineIdInSettings } from '@/ui/auth';
@@ -217,7 +218,8 @@ ${chalk.bold.cyan('Claude Code Options (from `claude --help`):')}
 
     // Run claude --help and display its output
     try {
-      const claudeHelp = execFileSync(claudeCliPath, ['--help'], { encoding: 'utf8', windowsHide: true });
+      const resolvedClaudePath = getDefaultClaudeCodePath();
+      const claudeHelp = execFileSync(resolvedClaudePath, ['--help'], { encoding: 'utf8', windowsHide: true });
       console.log(claudeHelp);
     } catch {
       console.log(chalk.yellow('Could not retrieve claude help. Make sure claude is installed.'));
