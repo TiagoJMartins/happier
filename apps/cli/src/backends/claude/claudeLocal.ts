@@ -263,7 +263,7 @@ export async function claudeLocal(opts: {
                     const arg = opts.claudeArgs[i];
                     if (arg.startsWith('-')) {
                         flagArgs.push(arg);
-                        if (flagsWithValue.has(arg) && i + 1 < opts.claudeArgs.length) {
+                        if (flagsWithValue.has(arg) && i + 1 < opts.claudeArgs.length && !opts.claudeArgs[i + 1]!.startsWith('-')) {
                             flagArgs.push(opts.claudeArgs[i + 1]!);
                             i++;
                         }
